@@ -35,6 +35,7 @@ impl Printable for StoreItem {
     }
 }
 
+// This is resolved at compile time. Performance overhead is minimal
 fn print_static<T: Printable>(printable_obj: &T) {
     println!("{}", printable_obj.to_string());
 }

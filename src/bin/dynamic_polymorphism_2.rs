@@ -1,3 +1,5 @@
+use delegate::delegate;
+
 // Common interface for both structs
 trait Printable {
     fn to_string(&self) -> String;
