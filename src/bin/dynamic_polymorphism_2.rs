@@ -35,23 +35,27 @@ impl Printable for StoreItem {
     }
 }
 
-fn print_static<T: Printable>(printable_obj: &T) {
+fn print_dynamic(printable_obj: &dyn Printable) {
     println!("{}", printable_obj.to_string());
 }
 
 fn main() {
-    let my_user = UserData {
-        name: "Mario".into(),
-        age: 32,
-        height: 50_f32,
-    };
+    // In this case, the objects are owned by each of the boxes, which belong to the vector
+    let owned_printables: Vec<Box<dyn Printable>> = vec![
+        Box::new(UserData {
+            name: "Mario".into(),
+            age: 32,
+            height: 50_f32,
+        }),
+        Box::new(StoreItem {
+            name: "Gamer PC".into(),
+            description: "The best PC you'll ever find".into(),
+            price: 50_000_f32,
+        }),
+    ];
 
-    let my_item = StoreItem {
-        name: "Gamer PC".into(),
-        description: "The best PC you'll ever find".into(),
-        price: 50_000_f32,
-    };
-
-    print_static(&my_user);
-    print_static(&my_item);
+    // We iterate over a reference now, since we don't want ownership of the boxes
+    for printable in &owned_printables {
+        print_dynamic(printable.as_ref());
+    }
 }
